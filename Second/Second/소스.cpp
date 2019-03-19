@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include <math.h>
 #define MAX 100
-typedef struct DOT{
+typedef struct DOT {
 	int x;
 	int y;
 }dot;
@@ -10,7 +10,7 @@ int N;
 int j = 0;
 double sum = 0;
 dot Dot[MAX];
-int tour[MAX],tour_min[MAX];
+int tour[MAX], tour_min[MAX];
 double min;
 void find_tour(int k);
 void swap(dot Dot[], int i, int j);
@@ -20,8 +20,8 @@ void sums(int k);
 
 int main(void) {
 	FILE*in_fp = fopen("input.txt", "r");
-	fscanf(in_fp,"%d", &N);
-	
+	fscanf(in_fp, "%d", &N);
+
 	for (int i = 0; i < N; i++) {
 		fscanf(in_fp, "%d %d", &Dot[i].x, &Dot[i].y);
 	}
@@ -50,22 +50,22 @@ void find_tour(int k) {
 			min = sum;
 			for (int i = 0; i < N; i++)
 				tour_min[i] = tour[i];
-		} 
+		}
 		return;
 	}
 	for (int i = k; i < N; i++) {
-		
+
 		swap(Dot, k, i);
 		find_tour(k + 1);
 		swap(Dot, k, i);
-		
+
 	}
 }
-void swap(dot Dot[],int i, int j) {
+void swap(dot Dot[], int i, int j) {
 	dot tmp = Dot[i];
 	Dot[i] = Dot[j];
 	Dot[j] = tmp;
-	tour_swap(Dot,i,j);
+	tour_swap(Dot, i, j);
 }
 void tour_swap(dot Dot[], int i, int j) {
 	int tmpi = tour[j];
@@ -73,8 +73,8 @@ void tour_swap(dot Dot[], int i, int j) {
 	tour[i] = tmpi;
 }
 
-double length(dot Dot[],int i,int j) {
-	double result = sqrt((Dot[i].x-Dot[j].x)*(Dot[i].x - Dot[j].x) + (Dot[i].y - Dot[j].y)*(Dot[i].y - Dot[j].y));
+double length(dot Dot[], int i, int j) {
+	double result = sqrt((Dot[i].x - Dot[j].x)*(Dot[i].x - Dot[j].x) + (Dot[i].y - Dot[j].y)*(Dot[i].y - Dot[j].y));
 	return result;
 }
 void sums(int k) {
