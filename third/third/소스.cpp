@@ -6,18 +6,16 @@ typedef struct DOT {
 	int x;
 	int y;
 }dot;
-int N;
 int j = 0;
+int N;
 double sum = 0;
 dot Dot[MAX];
 int tour[MAX], tour_min[MAX];
 double min;
-void find_tour(int k);
+void find_tour(int k, double result);
 void swap(dot Dot[], int i, int j);
 void tour_swap(dot Dot[], int i, int j);
 double length(dot Dot[], int i, int j);
-void sums(int k);
-
 int main(void) {
 	FILE*in_fp = fopen("input.txt", "r");
 	fscanf(in_fp, "%d", &N);
@@ -29,36 +27,38 @@ int main(void) {
 
 	for (int i = 0; i < N; i++)
 		tour[i] = i;
-
-	find_tour(0);
-
-	printf("sum : %lf ", min);
+	find_tour(1, 0);
+	printf("sum : %lf [ ", min);
 	for (int i = 0; i < N; i++)
 		printf("%d ", tour_min[i]);
-	printf("\n");
+	printf("]\n");
 
 	return 0;
 }
-
-void find_tour(int k) {
+void find_tour(int k, double result) {
 	if (k == N) {
-		sums(k);
+		result += length(Dot, N - 1, 0);
+		/*printf("result: %lf\n", result);*/
 		if (j == 0) {
-			min = sum; j++;
+			min = result; j++;
 		}
-		else if (min > sum) {
-			min = sum;
+		else if (min > result) {
+			min = result;
 			for (int i = 0; i < N; i++)
 				tour_min[i] = tour[i];
 		}
 		return;
 	}
 	for (int i = k; i < N; i++) {
+		if (k > 0) {
+			if (result > min) {
+				i++;
+			}
 
+		}
 		swap(Dot, k, i);
-		find_tour(k + 1);
+		find_tour(k + 1, result + length(Dot, k - 1, k));
 		swap(Dot, k, i);
-
 	}
 }
 void swap(dot Dot[], int i, int j) {
@@ -76,11 +76,4 @@ void tour_swap(dot Dot[], int i, int j) {
 double length(dot Dot[], int i, int j) {
 	double result = sqrt((Dot[i].x - Dot[j].x)*(Dot[i].x - Dot[j].x) + (Dot[i].y - Dot[j].y)*(Dot[i].y - Dot[j].y));
 	return result;
-}
-void sums(int k) {
-	sum = 0;
-	for (int i = 0; i < k - 1; i++) {
-		sum += length(Dot, i, i + 1);
-	}
-	sum += length(Dot, N - 1, 0);
 }
